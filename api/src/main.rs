@@ -5,18 +5,26 @@ const PORT: u16 = 5000;
 mod server;
 use server::ControllerHandler;
 use server::Request;
-use server::Response;
-use server::Server;
+use server::{Response, Server};
 
 fn main() {
   let mut server = Server::new();
 
-  let main_route_handler: ControllerHandler = Box::new(|_req: Request, res: Response| {
+  let main_route_handler: ControllerHandler = Box::new(|_req: Request| {
     println!("someone enter");
-    res
+    Response {  }
   });
 
-  server.add_get("/", main_route_handler);
+  let get_video_handler: ControllerHandler = Box::new(|_req: Request|{
+    println!("get the video");
+
+    Response {  }
+  });
+
+
+  server
+    .add_get("/", main_route_handler)
+    .add_get("/video", get_video_handler);
   server.listen(PORT, &|| {
     println!("[info]: Server listening on port: {}", PORT)
   })
