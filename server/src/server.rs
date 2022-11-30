@@ -1,5 +1,4 @@
 use std::{
-  fs,
   io::{Read, Write},
   net::{TcpListener, TcpStream},
 };
@@ -15,7 +14,6 @@ pub enum Method {
   GET,
 }
 pub struct Request {}
-
 
 pub struct Server {
   controllers: Vec<Controller>,
@@ -47,28 +45,28 @@ impl Server {
   }
 
   fn handle_connection(&mut self, mut stream: TcpStream) {
-    let mut buffer = [0; 1024];
-
-    stream.read(&mut buffer).unwrap();
-    let mut response = Response::new();
+    let mut req_buffer = vec![0; 1024 * 1024 * 4];
+    stream.read(&mut req_buffer).unwrap();
 
     let controller = self
       .controllers
       .iter()
-      .find(|c| buffer.starts_with(c.route.as_bytes()));
+      .find(|c| req_buffer.starts_with(c.route.as_bytes()));
 
-    let (status_code, content) = match controller {
-      Some(c) => {
-        let handler = c.handler.as_ref();
-        response = handler(Request {});
-        ("HTTP/1.1 200 OK", "public/index.html")
-      }
-      None => ("HTTP/1.1 404 NOT FOUND", "public/404.html"),
+    let mut response = if let Some(c) = controller {
+      let handler = c.handler.as_ref();
+      handler(Request {})
+    } else {
+      let mut res = Response::new();
+      res.not_found(None);
+      res
     };
 
-    let page = fs::read_to_string(content).unwrap();
+    // println!("{}", response.to_string());
+    let mut res_buffer = Vec::new();
+    response.write(&mut res_buffer);
 
-    stream.write(response.as_bytes()).unwrap();
+    stream.write(&res_buffer).unwrap();
     stream.flush().unwrap();
   }
 }

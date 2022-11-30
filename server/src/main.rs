@@ -5,20 +5,24 @@ const PORT: u16 = 5000;
 mod server;
 use server::ControllerHandler;
 use server::Request;
-use server::{Response, Server};
+use server::{response::Response, Server};
 
 fn main() {
   let mut server = Server::new();
 
   let main_route_handler: ControllerHandler = Box::new(|_req: Request| {
-    println!("someone enter");
-    Response {  }
+    let file = fs::read_to_string("public/index.html").unwrap();
+    Response::new().ok(file)
   });
 
   let get_video_handler: ControllerHandler = Box::new(|_req: Request|{
-    println!("get the video");
+    let video = fs::read("public/bunny.mp4").expect("couldn't read the file");
+    let res = Response::new();
 
-    Response {  }
+    let from = 0;
+    let to = (video.len() - 1) as u64;
+
+    res.partial_content(&video, from, to, video.len())
   });
 
 
