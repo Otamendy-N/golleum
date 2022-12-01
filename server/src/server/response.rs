@@ -101,7 +101,7 @@ impl Response {
     Response {
       headers: self.headers.clone(),
       body: buffer.to_vec(),
-      status: StatusCode::Ok,
+      status: StatusCode::PartialContent,
     }
   }
 }
