@@ -4,7 +4,7 @@ use self::header_map::{Header, HeaderMap};
 use self::status_code::StatusCode;
 
 mod header_map;
-mod status_code;
+pub mod status_code;
 
 pub struct Response {
   headers: HeaderMap,

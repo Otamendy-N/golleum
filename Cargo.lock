@@ -3,5 +3,12 @@
 version = 3
 
 [[package]]
-name = "web-server"
+name = "lib"
+version = "0.2.0"
+
+[[package]]
+name = "server"
 version = "0.1.0"
+dependencies = [
+ "lib",
+]

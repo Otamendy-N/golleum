@@ -4,11 +4,13 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::SeekFrom;
 
+use lib::controller::ControllerHandler;
+use lib::request::Request;
+use lib::response::Response;
+use lib::server::Server;
+
 const PORT: u16 = 5000;
 
-mod server;
-use server::ControllerHandler;
-use server::{request::Request, response::Response, Server};
 
 fn main() {
   let mut server = Server::new();
