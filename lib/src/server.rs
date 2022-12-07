@@ -1,6 +1,6 @@
 use std::{
     io::{Read, Write},
-    net::{TcpListener, TcpStream},
+    net::{TcpListener, TcpStream}
 };
 
 use crate::{
@@ -44,11 +44,12 @@ impl Server {
         let mut req_buffer = vec![0; 1024 * 1024 * 4];
         stream.read(&mut req_buffer).unwrap();
         request.read_from_buffer(&req_buffer);
+        println!("{}", String::from_utf8(req_buffer).unwrap().to_string());
 
         let controller = self
             .controllers
             .iter()
-            .find(|c| c.method == request.method && c.route == request.route);
+            .find(|c| c.method == request.method && c.route == request.path);
 
         let mut response = if let Some(c) = controller {
             let handler = c.handler.as_ref();
