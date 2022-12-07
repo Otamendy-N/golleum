@@ -9,9 +9,13 @@ pub struct Endpoint {
 }
 
 impl Endpoint {
-		pub fn new(method: Method, route: &str, handler: EndpointHandler) -> Self {
-			Endpoint { route: route.to_string(), method, handler: handler }
-		}
+  pub fn new(method: Method, route: &str, handler: EndpointHandler) -> Self {
+    Endpoint {
+      route: route.to_string(),
+      method,
+      handler,
+    }
+  }
 }
 
 pub struct ControllerBase {
@@ -21,5 +25,5 @@ pub struct ControllerBase {
 
 pub trait Controller {
   fn get_route(&self) -> String;
-	fn get_endpoints(&self) -> Vec<Endpoint>;
+  fn get_endpoints(&self) -> Vec<Endpoint>;
 }

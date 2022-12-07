@@ -26,8 +26,10 @@ impl Request {
   }
   pub fn read_from_buffer(&mut self, buffer: &[u8]) {
     let request = String::from_utf8_lossy(buffer).to_string();
+    let mut request = request.split("\r\n\r\n");
+    let headers = request.next().unwrap().to_owned();
 
-    request.split("\r\n").for_each(|s| {
+    headers.split("\r\n").for_each(|s| {
       if s.contains("HTTP/1.1") {
         self.method = Method::parse(s);
         self.query = Query::parse(s);
@@ -36,5 +38,8 @@ impl Request {
       let (key, value) = HeaderMap::parse_header(s);
       self.headers.insert(key, value);
     });
+
+    self.body = request.next().unwrap_or_default().to_string();
+    println!("{}", self.body)
   }
 }

@@ -8,7 +8,7 @@ use lib::{
 pub struct MainController {}
 
 impl MainController {
-  pub fn get(req: Request) -> Response {
+  pub fn get(_req: Request) -> Response {
     let file = fs::read_to_string("server/public/index.html").unwrap();
     Response::ok(file)
   }

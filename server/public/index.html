@@ -14,5 +14,18 @@
   <body>
     <h1>Hola Otamendy! (I'm alive bitch!!)</h1>
     <video src="http://localhost:5000/videos/get-video" width="800" controls autoplay></video>
+    <script>
+      const body = {
+        key: "value",
+        otherKey: {
+          objectValue: 3
+        },
+        anotherKey: ["1value", "fsdfs"]
+      }
+      fetch("http://localhost:5000/hola-post", {
+        method: "POST",
+        body: JSON.stringify(body)
+      })
+    </script>
   </body>
 </html>
