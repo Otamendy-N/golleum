@@ -49,7 +49,7 @@ impl Server {
         let controller = self
             .controllers
             .iter()
-            .find(|c| c.method == request.method && c.route == request.path);
+            .find(|c| c.method == request.method && c.route == request.query.path());
 
         let mut response = if let Some(c) = controller {
             let handler = c.handler.as_ref();
