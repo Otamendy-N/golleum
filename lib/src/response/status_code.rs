@@ -7,6 +7,8 @@ pub enum StatusCode {
   ServerError = 500,
   Created = 201,
   NoContent = 204,
+  MethodNotAllowed = 405,
+  Forbidden = 403,
 }
 
 impl StatusCode {
@@ -20,6 +22,8 @@ impl StatusCode {
       StatusCode::ServerError => "500 Internal Server Error".to_string(),
       StatusCode::Created => "201 Created".to_string(),
       StatusCode::NoContent => "204 No Content".to_string(),
+      StatusCode::MethodNotAllowed => "405 Method Not Allowed".to_string(),
+      StatusCode::Forbidden => "403 Forbidden".to_string()
     }
   }
 }

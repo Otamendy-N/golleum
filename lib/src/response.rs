@@ -15,7 +15,7 @@ pub struct Response {
 impl Response {
   pub fn new() -> Response {
     let mut headers: HeaderMap = HashMap::new();
-    headers.insert("Server".to_string(), "Dark Horse".to_string());
+    headers.insert("Server".to_string(), "Mota".to_string());
     let body = Vec::new();
     Response {
       headers,
@@ -28,6 +28,57 @@ impl Response {
     let mut res = Response::new();
     res.body = body.as_bytes().to_vec();
     res.status = StatusCode::Ok;
+    res
+  }
+
+  pub fn internal_server_error(error: Option<String>) -> Response {
+    let mut res = Response::new();
+    res.status = StatusCode::ServerError;
+
+    res.body = if let Some(e) = error {
+      e.as_bytes().to_vec()
+    } else {
+      "Internal server error...".as_bytes().to_vec()
+    };
+    res
+  }
+
+  pub fn created(uri: &str, body: Option<String>) -> Response {
+    let mut res = Response::new();
+    res.status = StatusCode::Created;
+
+    res.body = if let Some(b) = body {
+      b.as_bytes().to_vec()
+    } else {
+      let response_message = format!("URI of the new resource: '{uri}'");
+      response_message.as_bytes().to_vec()
+    };
+    res
+  }
+
+  pub fn no_content() -> Response {
+    let mut res = Response::new();
+    res.status = StatusCode::NoContent;
+    res.body = Vec::new();
+    res
+  }
+
+  pub fn method_not_allowed(route: &str) -> Response {
+    let mut res = Response::new();
+    res.status = StatusCode::MethodNotAllowed;
+    let response_message = format!("Invalid request method for the route: '{route}'");
+    res.body = response_message.as_bytes().to_vec();
+    res
+  }
+
+  pub fn bad_request(body: Option<String>) -> Response {
+    let mut res = Response::new();
+    res.status = StatusCode::BadRequest;
+    res.body = if let Some(b) = body {
+      b.as_bytes().to_vec()
+    } else {
+      "Invalid request.".as_bytes().to_vec()
+    };
     res
   }
 
@@ -84,6 +135,8 @@ impl Response {
 
     buffer.append(&mut response.to_vec());
   }
+  
+  // This function is for debuging porpuses only
   // pub fn _to_string(&mut self) -> String {
   //   self
   //     .headers
