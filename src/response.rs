@@ -15,7 +15,7 @@ pub struct Response {
 impl Response {
   pub fn new() -> Response {
     let mut headers: HeaderMap = HashMap::new();
-    headers.insert("Server".to_string(), "Mota".to_string());
+    headers.insert("Server".to_string(), "Golleum".to_string());
     let body = Vec::new();
     Response {
       headers,

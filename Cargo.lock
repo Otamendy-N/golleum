@@ -3,17 +3,10 @@
 version = 3
 
 [[package]]
-name = "lib"
+name = "golleum"
 version = "0.2.0"
 dependencies = [
  "urlencoding",
-]
-
-[[package]]
-name = "server"
-version = "0.1.0"
-dependencies = [
- "lib",
 ]
 
 [[package]]
